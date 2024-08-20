@@ -1,0 +1,23 @@
+<launch>  
+  <include file="$(find aruco_detect)/launch/aruco_detect.launch">
+      <param name="publish_images" value="true" />
+      <arg name="do_pose_estimation" value="true" />
+      <arg name="vis_msgs" value="true" />
+      <arg name="fiducial_len" value="0.1778" />
+      <arg name="dictionary" value="16" />
+      <arg name="camera" value="camera/rgb" />
+      <arg name="image" value="image_raw" />
+  </include>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find fiducial_nav)/worlds/fiducials.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <node name="mapper" pkg="fiducial_nav" type="mapper_sim.py" output="screen" />
+  <node name="my_odom" pkg="fiducial_nav" type="my_odom.py" output="screen" />
+</launch>
