@@ -17,6 +17,7 @@ count = 0
 # loop until ^c
 while not rospy.is_shutdown():
     pub.publish(count)
+    print(f"Published {count=}")
     count += 1
     rate.sleep()
     rospy.sleep(0.5)
