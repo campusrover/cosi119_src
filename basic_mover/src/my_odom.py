@@ -28,13 +28,15 @@ class MyOdom:
         `cur_pose`.
         """
         raise NotImplementedError
+        
 
     def update_yaw(self, cur_orientation):
         """
         Helper to `odom_cb`.
         Updates `self.yaw` to current heading of robot.
         """
-        raise NotImplementedError
+        # raise NotImplementedError
+        
 
     def publish_data(self):
         """
@@ -43,6 +45,8 @@ class MyOdom:
         # The `Point` object should be used simply as a data container for
         # `self.dist` and `self.yaw` so we can publish it on `my_odom`.
         raise NotImplementedError
+
+        
         
 if __name__ == '__main__':
     rospy.init_node('my_odom')
