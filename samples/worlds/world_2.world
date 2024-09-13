@@ -1,0 +1,202 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+    <world name="default">
+
+        <!-- A light source -->
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <!-- Ground plane -->
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+
+        <!-- Simple Maze -->
+        <model name="Simple_Maze">
+            <static>true</static>
+            <pose>0 0.5 0 0 0 0</pose>
+            
+            <!-- First section of the outer wall -->
+            <link name="outer_wall_1">
+                <collision name="collision_1">
+                    <geometry>
+                        <box>
+                            <size>3 0.1 0.5</size> <!-- Depth=1m, Width=0.1m, Height=0.5m -->
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_1">
+                <geometry>
+                    <box>
+                        <size>3 0.1 0.5</size> <!-- Same size as collision -->
+                    </box>
+                </geometry>
+                <material>
+                    <ambient>0.5 0.5 0.5 1</ambient>
+                    <diffuse>0.5 0.5 0.5 1</diffuse>
+                    <specular>0.1 0.1 0.1 1</specular>
+                </material>
+                </visual>
+            </link>
+            <!-- Second section of the outer wall -->
+            <link name="outer_wall_2">
+                <pose>-1.5 -1.5 0 0 0 1.57</pose> <!-- Position it at the end of the first wall, rotated 90 degrees -->
+                <collision name="collision_2">
+                    <geometry>
+                        <box>
+                            <size>3.1 0.1 0.5</size> <!-- Same size as first section -->
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_2">
+                    <geometry>
+                        <box>
+                            <size>3.1 0.1 0.5</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.5 0.5 0.5 1</ambient>
+                        <diffuse>0.5 0.5 0.5 1</diffuse>
+                        <specular>0.1 0.1 0.1 1</specular>
+                    </material>
+                </visual>
+            </link>
+            <!-- Third section of the outer wall -->
+            <link name="outer_wall_3">
+                <pose>1.5 -1.5 0 0 0 1.57</pose> 
+                <collision name="collision_2">
+                    <geometry>
+                        <box>
+                        <size>3.1 0.1 0.5</size> <!-- Same size as first section -->
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_2">
+                    <geometry>
+                        <box>
+                            <size>3.1 0.1 0.5</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.5 0.5 0.5 1</ambient>
+                        <diffuse>0.5 0.5 0.5 1</diffuse>
+                        <specular>0.1 0.1 0.1 1</specular>
+                    </material>
+                </visual>
+            </link>
+            <!-- Entrance Section -->
+            <link name="outer_wall_entrance_long">
+                <pose>-0.5 -3 0 0 0 0</pose> 
+                <collision name="collision_1">
+                    <geometry>
+                        <box>
+                            <size>2 0.1 0.5</size> <!-- Depth=1m, Width=0.1m, Height=0.5m -->
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_1">
+                <geometry>
+                    <box>
+                        <size>2 0.1 0.5</size> <!-- Same size as collision -->
+                    </box>
+                </geometry>
+                <material>
+                    <ambient>0.5 0.5 0.5 1</ambient>
+                    <diffuse>0.5 0.5 0.5 1</diffuse>
+                    <specular>0.1 0.1 0.1 1</specular>
+                </material>
+                </visual>
+            </link>
+            <link name="outer_wall_entrance_short">
+                <pose>1.25 -3 0 0 0 0</pose> 
+                <collision name="collision_1">
+                    <geometry>
+                        <box>
+                            <size>0.5 0.1 0.5</size> <!-- Depth=1m, Width=0.1m, Height=0.5m -->
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_1">
+                <geometry>
+                    <box>
+                        <size>0.5 0.1 0.5</size> <!-- Same size as collision -->
+                    </box>
+                </geometry>
+                <material>
+                    <ambient>0.5 0.5 0.5 1</ambient>
+                    <diffuse>0.5 0.5 0.5 1</diffuse>
+                    <specular>0.1 0.1 0.1 1</specular>
+                </material>
+                </visual>
+            </link>
+             <!-- Maze Section -->
+            <link name="divider_1">
+                <pose>0.5 -2 0 0 0 0</pose> 
+                <collision name="collision_1">
+                    <geometry>
+                        <box>
+                            <size>2 0.1 0.5</size> 
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_1">
+                <geometry>
+                    <box>
+                        <size>2 0.1 0.5</size> 
+                    </box>
+                </geometry>
+                <material>
+                    <ambient>0.5 0.5 0.5 1</ambient>
+                    <diffuse>0.5 0.5 0.5 1</diffuse>
+                    <specular>0.1 0.1 0.1 1</specular>
+                </material>
+                </visual>
+            </link>
+            <link name="divider_2">
+                <pose>-1 -1 0 0 0 0</pose> 
+                <collision name="collision_1">
+                    <geometry>
+                        <box>
+                            <size>1 0.1 0.5</size> 
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_1">
+                <geometry>
+                    <box>
+                        <size>1 0.1 0.5</size> 
+                    </box>
+                </geometry>
+                <material>
+                    <ambient>0.5 0.5 0.5 1</ambient>
+                    <diffuse>0.5 0.5 0.5 1</diffuse>
+                    <specular>0.1 0.1 0.1 1</specular>
+                </material>
+                </visual>
+            </link>
+            <link name="divider_3">
+                <pose>0.5 -1.5 0 0 0 1.57</pose> 
+                <collision name="collision_1">
+                    <geometry>
+                        <box>
+                            <size>1 0.1 0.5</size> 
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="visual_1">
+                <geometry>
+                    <box>
+                        <size>1 0.1 0.5</size> 
+                    </box>
+                </geometry>
+                <material>
+                    <ambient>0.5 0.5 0.5 1</ambient>
+                    <diffuse>0.5 0.5 0.5 1</diffuse>
+                    <specular>0.1 0.1 0.1 1</specular>
+                </material>
+                </visual>
+            </link>
+        </model>
+    </world>
+</sdf>
