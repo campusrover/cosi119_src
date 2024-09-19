@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<robot name="platform">
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+  <material name="black">
+    <color rgba="0 0 0 0.5"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+  <material name="green">
+    <color rgba="0 1 0 1"/>
+  </material>
+   <material name="grey">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+  <material name="beige">
+    <color rgba="0.95 0.90 0.80 1.0"/>
+</material>
+<material name="orange">
+  <color rgba="1.0 0.65 0.0 1.0" />
+</material>
+
+ <joint name="base_link_to_base_footprint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.045"/>
+  </joint>
+
+  <link name="base_footprint">
+  </link>
+
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.32 0.31 0.09"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="0 0 0" xyz="-0.09 0 0.09"/>
+    </visual>
+  </link>
+
+  <link name="right_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="0.03" radius="0.07"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+  </link>
+
+  <joint name="base_to_right_wheel" type="fixed">
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <origin rpy="1.57 0 0" xyz="0.0 -.15 0.03"/>
+  </joint>
+
+  <link name="left_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="0.03" radius="0.07"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <joint name="base_to_left_wheel" type="fixed">
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <origin rpy="1.57 0 0" xyz="0.0 0.15 0.03"/>
+  </joint>
+
+   <link name="scan_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.03" radius="0.03"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+   </link>
+
+  <joint name="base_link_to_scan_link" type="fixed">
+    <parent link="base_link"/>
+    <child link="scan_link"/>
+    <origin xyz="-0.17 0 0.1" rpy="0 0 3.141"/>
+  </joint>
+
+   <link name="camera_link">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+   </link>
+
+  <joint name="Footprint_to_camera_link" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="camera_link"/>
+    <origin xyz="0.08 0 0.1"  rpy="${-pi/2 - 0.3} 0 ${-pi/2}"/>
+  </joint>
+
+ <link name="imu_link">
+    <visual>
+      <geometry>
+        <box size=".03 .03 .005"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+   </link>
+
+  <joint name="base_link_to_imu_link" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="-0.02 0 0.05"/>
+  </joint>
+
+
+</robot>
