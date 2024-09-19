@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 # termios library allows access to terminal (shell) input 
-
 import sys, select, tty, termios
 import rospy
 from std_msgs.msg import String
@@ -15,11 +14,13 @@ if __name__ == '__main__':
     # Save "keyboard attributes" so you can restore them at the end.
     old_attr = termios.tcgetattr(sys.stdin) 
     tty.setcbreak(sys.stdin.fileno())
-    print "Publishing keystrokes. Press Ctrl-C to exit..." 
-    
+    print(">")
+
     while not rospy.is_shutdown():
         if select.select([sys.stdin], [], [], 0)[0] == [sys.stdin]: 
-            key_pub.publish(sys.stdin.read(1))
+            ch = sys.stdin.read(1)
+            print(ch)
+            key_pub.publish(ch)
         rate.sleep()
     
     # restore keyboard attributes
