@@ -4,6 +4,9 @@ import rospy
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 
+ANGULAR_VEL = 0.3
+LINEAR_VEL = 0.5
+
 # Map from a letter to a the change in x for linear, and the change in z for angular
 key_mapping = { 'w': [ 0, 1], 'x': [0, -1],
                 'a': [-1, 0], 'd': [1,  0],
@@ -11,13 +14,13 @@ key_mapping = { 'w': [ 0, 1], 'x': [0, -1],
 
 # Callback whenever a `keys` message is seen
 def keys_cb(msg, twist_pub):
-    if len(msg.data) == 0 or not key_mapping.has_key(msg.data[0]):
+    if len(msg.data) == 0 or not msg.data[0] in key_mapping:
         return # unknown key
 
     vels = key_mapping[msg.data[0]]
     t = Twist()
-    t.angular.z = vels[0]
-    t.linear.x = vels[1]
+    t.angular.z = vels[0] * ANGULAR_VEL
+    t.linear.x = vels[1] * LINEAR_VEL
     twist_pub.publish(t)
 
 # Main program when this .py file is called directly (this is a standard python idiom)

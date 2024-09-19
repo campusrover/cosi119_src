@@ -7,7 +7,7 @@
 
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find <your package name>)/worlds/simple_maze.world"/>
+    <arg name="world_name" value="$(find samples)/worlds/world_2.world"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="0.1"/>
     <arg name="gui" value="true"/>
