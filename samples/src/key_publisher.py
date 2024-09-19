@@ -14,15 +14,6 @@ if __name__ == '__main__':
     # Save "keyboard attributes" so you can restore them at the end.
     old_attr = termios.tcgetattr(sys.stdin) 
     tty.setcbreak(sys.stdin.fileno())
-<<<<<<< HEAD
-    print ("Publishing keystrokes. Press Ctrl-C to exit...")
-    
-    while not rospy.is_shutdown():
-        if select.select([sys.stdin], [], [], 0)[0] == [sys.stdin]: 
-            key_pub.publish(sys.stdin.read(1))
-        rate.sleep()
-    
-=======
     print(">")
 
     try:
@@ -32,9 +23,8 @@ if __name__ == '__main__':
                 key_pub.publish(ch)
             rate.sleep()
     except KeyboardInterrupt:
-        print("\nCtrl+C pressed. Exiting...")
+        print("\nCtrl+C pressed...")
 
->>>>>>> bf1390b243206cd94d04c2e6391bfe5a25f584b1
     # restore keyboard attributes
     print("exiting!")
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_attr)
