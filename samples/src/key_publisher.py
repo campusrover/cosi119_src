@@ -16,12 +16,15 @@ if __name__ == '__main__':
     tty.setcbreak(sys.stdin.fileno())
     print(">")
 
-    while not rospy.is_shutdown():
-        if select.select([sys.stdin], [], [], 0)[0] == [sys.stdin]: 
-            ch = sys.stdin.read(1)
-            print(ch)
-            key_pub.publish(ch)
-        rate.sleep()
-    
+    try:
+        while not rospy.is_shutdown():
+            if select.select([sys.stdin], [], [], 0)[0] == [sys.stdin]: 
+                ch = sys.stdin.read(1)
+                key_pub.publish(ch)
+            rate.sleep()
+    except KeyboardInterrupt:
+        print("\nCtrl+C pressed. Exiting...")
+
     # restore keyboard attributes
+    print("exiting!")
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_attr)
