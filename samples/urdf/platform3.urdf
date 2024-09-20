@@ -72,7 +72,12 @@
   <joint name="base_to_left_wheel" type="fixed">
     <parent link="base_link"/>
     <child link="left_wheel"/>
-    <origin rpy="1.57 0 0" xyz="0.0 0.15 0.03"/>
+      <geometry>
+        <cylinder length="0.03" radius="0.07"/>
+      </geometry>
+      <material name="red"/>
+
+    <origin rpy="0 0 0" xyz="0.0 0.15 0.03"/>
   </joint>
 
    <link name="scan_link">
