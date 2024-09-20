@@ -15,7 +15,7 @@ def keys_cb(msg, twist_pub):
     global g_last_twist
 
     # Check if there's no message data or if it's not one of our keys
-    if len(msg.data) == 0 or not key_mapping.has_key(msg.data[0]):
+    if len(msg.data) == 0 or not msg.data[0] in key_mapping:
         return # unknown key
     
     # Fill in the cmd_vel set up on in global context below, based on the info in key_mapping.
