@@ -1,0 +1,115 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+
+    <!-- A light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <model name="Sqaure">
+      <static>true</static>
+      <pose>0 0.5 0 0 0 0</pose>
+      
+      <!-- First section of the L -->
+      <link name="wall_section_1">
+        <collision name="collision_1">
+          <geometry>
+            <box>
+              <size>3 0.1 0.5</size> <!-- Depth=3m, Width=0.1m, Height=0.5m -->
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual_1">
+          <geometry>
+            <box>
+              <size>3 0.1 0.5</size> <!-- Same size as collision -->
+            </box>
+          </geometry>
+           <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <link name="wall_section_3">
+        <pose>0 -2.9 0 0 0 0</pose> 
+        <collision name="collision_3">
+          <geometry>
+            <box>
+              <size>3 0.1 0.5</size> 
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual_3">
+          <geometry>
+            <box>
+              <size>3 0.1 0.5</size> 
+            </box>
+          </geometry>
+           <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <!-- Second section of the L, rotated to form the L shape -->
+      <link name="wall_section_2">
+        <pose>-1.5 -1.45 0 0 0 1.57</pose> <!-- Position it at the end of the first wall, rotated 90 degrees -->
+        <collision name="collision_2">
+          <geometry>
+            <box>
+              <size>3 0.1 0.5</size> <!-- Same size as first section -->
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual_2">
+          <geometry>
+            <box>
+              <size>3 0.1 0.5</size>
+            </box>
+          </geometry>
+           <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+    </link>
+            
+
+    <link name="wall_section_4">
+        <pose>1.5 -1.45 0 0 0 1.57</pose> 
+        <collision name="collision_4">
+          <geometry>
+            <box>
+              <size>3 0.1 0.5</size> 
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual_2">
+          <geometry>
+            <box>
+              <size>3 0.1 0.5</size>
+            </box>
+          </geometry>
+           <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
