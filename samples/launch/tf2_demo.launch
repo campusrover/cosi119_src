@@ -8,6 +8,9 @@
     <node name="turtle2_tf2_broadcaster" pkg="samples" type="turtle_tf2_broadcaster.py" respawn="false" output="screen" >
       <param name="turtle" type="string" value="turtle2" /> 
     </node>
+    <node name="turtle3_tf2_broadcaster" pkg="samples" type="turtle_tf2_broadcaster.py" respawn="false" output="screen" >
+      <param name="turtle" type="string" value="turtle3" /> 
+    </node>
 
     <node pkg="samples" type="turtle_tf2_listener.py" 
           name="listener" output="screen"/>

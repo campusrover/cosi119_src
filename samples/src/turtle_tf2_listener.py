@@ -19,7 +19,8 @@ if __name__ == '__main__':
     rospy.wait_for_service('spawn')
     spawner = rospy.ServiceProxy('spawn', turtlesim.srv.Spawn)
     turtle_name = rospy.get_param('turtle', 'turtle2')
-    spawner(4, 2, 0, turtle_name)
+    spawner(4, 2, 0, "turtle2")
+    spawner(3, 3, 0, "turtle3")
 
 # We are going to steer turtle2. We start by creating a turtle2/cmd_vel publisher
     turtle_vel = rospy.Publisher('%s/cmd_vel' % turtle_name, geometry_msgs.msg.Twist, queue_size=1)
