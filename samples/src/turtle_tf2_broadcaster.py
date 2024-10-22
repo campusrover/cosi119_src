@@ -1,15 +1,23 @@
-#!/usr/bin/env python
+#!/usr/bin/env python  
 import rospy
 import time
+# Because of transformations
 import tf_conversions
+
 import tf2_ros
 import geometry_msgs.msg
 import turtlesim.msg
-import turtlesim.srv
 
+# Called each time the turtle publishes a new pose. We inform tf2 that there's a new
+# transform between this turtle and the world coordinate system by creating a TransformBroadcaster
+# and calling sendTransform.
+#
 def handle_turtle_pose(msg, turtlename):
     br = tf2_ros.TransformBroadcaster()
     t = geometry_msgs.msg.TransformStamped()
+
+# Fill in the Transform with the current time, the from and to frame_ids and
+# the 7 components of the transform, three for translation and 4 (!) for rotation.
 
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "world"
@@ -23,28 +31,17 @@ def handle_turtle_pose(msg, turtlename):
     t.transform.rotation.z = q[2]
     t.transform.rotation.w = q[3]
 
+# Publish the trandsform.
     br.sendTransform(t)
 
-# Set the pen color for the turtlesim turtle using turtleX/set_pen service
-def set_turtle_color(turtlename, r, g, b):
-    rospy.wait_for_service(f'/{turtlename}/set_pen')
-    try:
-        set_pen = rospy.ServiceProxy(f'/{turtlename}/set_pen', turtlesim.srv.SetPen)
-        set_pen(r, g, b, 3, 0)  # (r, g, b, width, off)
-    except rospy.ServiceException as e:
-        rospy.logerr(f"Service call failed: {e}")
-
 if __name__ == '__main__':
+# Create a node, grab a parameter indicating the name of the turtle, and subscribe that
+# turtle's pose, /turtleX/pose. By using a parameter we can launch this node and supply 
+# the turtle name later.
     rospy.init_node('tf2_turtle_broadcaster')
     turtlename = rospy.get_param('~turtle', 'turtle1')
-
-    # Set different colors for each turtle based on its name
-    if turtlename == "turtle1":
-        set_turtle_color(turtlename, 255, 0, 0)  # Red for turtle1
-    elif turtlename == "turtle2":
-        set_turtle_color(turtlename, 0, 255, 0)  # Green for turtle2
-    elif turtlename == "turtle3":
-        set_turtle_color(turtlename, 0, 0, 255)  # Blue for turtle3
-
-    rospy.Subscriber('/%s/pose' % turtlename, turtlesim.msg.Pose, handle_turtle_pose, turtlename)
+    rospy.Subscriber('/%s/pose' % turtlename,
+                     turtlesim.msg.Pose,
+                     handle_turtle_pose,
+                     turtlename)
     rospy.spin()

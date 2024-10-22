@@ -1,43 +1,46 @@
 #!/usr/bin/env python  
 import rospy
+
 import math
 import tf2_ros
 import geometry_msgs.msg
 import turtlesim.srv
 
+# Create a node and allocate a tf buffer and a tf listener.
+
 if __name__ == '__main__':
     rospy.init_node('tf2_turtle_listener')
 
-    # Create tf buffer and listener
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
 
-    # Spawn the follower turtle
+# Advanced trick to launch a second copy of the turtlesim named after
+# the param turtle (default to turtle2)
     rospy.wait_for_service('spawn')
     spawner = rospy.ServiceProxy('spawn', turtlesim.srv.Spawn)
+    turtle_name = rospy.get_param('turtle', 'turtle2')
+    spawner(4, 2, 0, turtle_name)
 
-    leader_turtle = rospy.get_param('~leader_turtle', 'turtle1')  # Param to define the leader
-    follower_turtle = rospy.get_param('~follower_turtle', 'turtle2')  # Param to define the follower
-    spawner(4, 2, 0, follower_turtle)
+# We are going to steer turtle2. We start by creating a turtle2/cmd_vel publisher
+    turtle_vel = rospy.Publisher('%s/cmd_vel' % turtle_name, geometry_msgs.msg.Twist, queue_size=1)
 
-    # Publisher for the follower's velocity
-    turtle_vel = rospy.Publisher('%s/cmd_vel' % follower_turtle, geometry_msgs.msg.Twist, queue_size=1)
-
+# And we loop, 10x per second
     rate = rospy.Rate(10.0)
     while not rospy.is_shutdown():
         try:
-            # Get the transformation between the leader and follower turtles
-            trans = tfBuffer.lookup_transform(follower_turtle, leader_turtle, rospy.Time())
-        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+# This is the most important line. Requests the transform between turtle1 and turtle_name
+            trans = tfBuffer.lookup_transform(turtle_name, 'turtle1', rospy.Time())
+        except (tf2_ros.LookupException, tf2_ros.ConnectivityException,tf2_ros.ExtrapolationException):
             rate.sleep()
             continue
 
-        # Compute the necessary velocity to follow the leader
         msg = geometry_msgs.msg.Twist()
+
+# Some trig to compute the desired motion of turtle2
         msg.angular.z = 4 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
         msg.linear.x = 0.5 * math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2)
 
-        # Publish the velocity command
+# And publish it to drive turtle2
         turtle_vel.publish(msg)
 
         rate.sleep()
