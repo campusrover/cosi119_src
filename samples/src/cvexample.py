@@ -4,7 +4,7 @@
 # It illustrates
 # 1. how to subscribe and publish images - from the camera and to another topic
 # 2. how to use opencv to do a variety of useful transformations
-# 3. how to use dynamic_reconfigure to change parameters and see the effect
+# 3. how to use dynamic_reconfigure to change parameters and see the effect. Dynamic Reconfigure is accessed through rqt
 
 """ 
 NOTES: Make sure the camera is on. Verify that you see the images either with rviz or rqt_image_view (https://wiki.ros.org/rqt_image_view). This program will take that image and subject it to several transformations and publish the transformed images on other topics. Also run rqt_reconfigure (https://wiki.ros.org/rqt_reconfigure) which will give you a simple UI where you can play with parameters to see what works best. You will have to read the code to see what it does in more detail. I will add features to it as they come up.
@@ -20,13 +20,13 @@ from std_msgs.msg import String
 import numpy as np
 import cv2 as cv
 from dynamic_reconfigure.server import Server as DynamicReconfigureServer
-from prrexamples.cfg import CvexampleConfig as ConfigType
+from samples.cfg import CvexampleConfig as ConfigType
 
 class CvExample():
 
     def cv_callback(self, msg):
         if (self.param_ready):
-            self.rgb_image = CvBridge().imgmsg_to_cv2(msg)
+            self.rgb_image = CvBridge().imgmsg_to_cv2(msg, desired_encoding="bgr8")
             self.hsv_image = cv.cvtColor(self.rgb_image, cv.COLOR_BGR2HSV)
             self.create_masked_image()
             self.create_grey_image()
@@ -38,7 +38,9 @@ class CvExample():
         # range of colors, found by trial and error
         lower_color_bound = np.array([self.config.lb_h, self.config.lb_s, self.config.lb_v])
         upper_color_bound = np.array([self.config.ub_h, self.config.ub_s, self.config.ub_v])
+        # rospy.loginfo(f"Color bounds: {lower_color_bound} to {upper_color_bound}")
 
+        #print (f"{self.hsv_image.shape}")
         # find pixels in range bounded by BGR color bounds
         self.mask = cv.inRange(self.hsv_image, lower_color_bound, upper_color_bound)
 
@@ -50,10 +52,11 @@ class CvExample():
         self.masked_pub.publish(masked_msg)
     
     def create_grey_image(self):
-        self.grey_image = cv.cvtColor(self.rgb_image, cv.COLOR_RGB2GRAY) 
-        self.grey_masked_image = cv.cvtColor(self.masked_rgb_image, cv.COLOR_RGB2GRAY) 
-        grey_masked_msg = CvBridge().cv2_to_compressed_imgmsg(self.grey_masked_image)
-        self.grayed_pub.publish(grey_masked_msg)
+        self.grey_image = cv.cvtColor(self.rgb_image, cv.COLOR_RGB2GRAY)
+        self.grey_masked_image = cv.cvtColor(self.masked_rgb_image, cv.COLOR_RGB2GRAY)
+        grey_masked_msg = CvBridge().cv2_to_compressed_imgmsg(self.grey_masked_image, dst_format='jpg')  # Add dst_format
+        self.grayed_pub.publish(grey_masked_msg)        
+
 
     def create_centroid_image(self):
         self.centroid_image = self.rgb_image.copy()
@@ -61,7 +64,7 @@ class CvExample():
         if M['m00'] > 0:
              cx = int(M['m10']/M['m00'])
              cy = int(M['m01']/M['m00'])
-             cv.circle(self.centroid_image, (cx, cy), 20, (0,255,255), -1)
+             cv.circle(self.centroid_image, (cx, cy), 50, (0,0,0), -1)
         centroid_msg = CvBridge().cv2_to_compressed_imgmsg(self.centroid_image)
         self.centroid_pub.publish(centroid_msg)
 
