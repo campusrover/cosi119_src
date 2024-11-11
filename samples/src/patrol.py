@@ -13,9 +13,11 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 # mathematical represetnation for "euler angles", yaw, pitch and roll.
 
 waypoints = [
-    [ (-1.0, 0.0, 0.0),
+    [ (-1.25, 0.0, 0.0),
       (0.0, 0.0, 0.0, 1.0)],
-    [ (-1.0, 2.0, 0.0),
+    [ (1.25, 0.0, 0.0),
+      (0.0, 0.0, 0.0, 1.0)],
+    [ (-1.25, 1.25, 0.0),
       (0.0, 0.0, 0.0, 1.0)]
 ]
 
@@ -52,6 +54,8 @@ if __name__ == '__main__':
         # repeat the waypoints over and over again
         for pose in waypoints:
             goal = goal_pose(pose)
-            print("Going for goal: ", goal)
+            print(f"***** Going for goal: {pose[0][0]}, {pose[0][1]}")
             client.send_goal(goal)
             client.wait_for_result()
+
+    print("*** MISSION ACCOMPLISHED ***")
