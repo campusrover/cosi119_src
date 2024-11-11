@@ -18,6 +18,7 @@ class MoveBaseRecovery(object):
     self.name = name
     self.machine = GraphMachine(model=self, states=MoveBaseRecovery.states, initial='navigating', show_conditions=True)
 
+  def setup_states(self):
     self.machine.add_transition(trigger='stuck', source='navigating', dest='reset')
     self.machine.add_transition(trigger='clear', source='reset', dest='navigating')
     self.machine.add_transition(trigger='clear', source='rotate1', dest='navigating')
@@ -27,6 +28,10 @@ class MoveBaseRecovery(object):
     self.machine.add_transition(trigger='stuck', source='rotate1', dest='reset_aggressive')
     self.machine.add_transition(trigger='stuck', source='reset_aggressive', dest='rotate2')
     self.machine.add_transition(trigger='stuck', source='rotate2', dest='abort')
-    self.machine.get_graph().draw("x.png", prog="dot")
 
-x = MoveBaseRecovery("xxx")
+  def generate_png(self, filename: str):
+    self.machine.get_graph().draw(filename, prog="dot")
+
+example = MoveBaseRecovery("Example")
+example.setup_states()
+example.generate_png("example.png")
