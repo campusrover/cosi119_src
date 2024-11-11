@@ -10,6 +10,7 @@
 #     t.get_graph().draw('fsm_example.png', prog='dot')
 
 from transitions.extensions import GraphMachine
+import time
 import random
 
 class MoveBaseRecovery(object):
@@ -38,20 +39,43 @@ class MoveBaseRecovery(object):
 
   def simulate_run(self):
     counter = 0
-    while True:
-      if self.fsm.state() == "navigating":
+    while counter < 25 or self.state == "abort":
+      counter += 1
+      time.sleep(0.5)
+      if self.state == "navigating":
         print("navigating")
-        if self.of_ten(1):
-          print("oops, I am stuck!")
-          self.fsm.trigger("stuck")
-      elif self.fsm.state() == "reset":
-        print("resetting...")
-        if self.of_ten(1):
-          print("really stuck, trying rotate")
-          self.fsm.trigger("clear")
-      else:
-        print("bug in Pito's code")
-        break
+        if self.of_ten(5):
+          print("    oops, I am stuck!")
+          self.trigger("stuck")
+      elif self.state == "reset":
+        print("    resetting and recalculating to try and get unstuck")
+        if self.of_ten(5):
+          print("    really stuck, trying counter clockwise rotation to try and get unstuck")
+          self.trigger("stuck")
+        else:
+          print("    reset worked!")
+          self.trigger("clear")
+      elif self.state == "rotate1":
+        print("    doing counter clockwise rotatation to try and get unstuck")
+        if self.of_ten(5):
+          self.trigger("stuck")
+        else:
+          print("    counter clockwise rotate 1 worked!")
+          self.trigger("clear")
+      elif self.state == "reset_aggressive":
+        print("    doing aggressive reset")
+        if self.of_ten(5):
+          self.trigger("stuck")
+        else:
+          print("    aggressive reset worked!\n")
+          self.trigger("clear")
+      elif self.state == "rotate2":
+        print("    doing clockwise rotation to try to get unstuck")
+        if self.of_ten(5):
+          self.trigger("stuck")
+        else:
+          print("    rotate clockwise worked!\n")
+          self.trigger("clear")
 
   
 example = MoveBaseRecovery("Example")
